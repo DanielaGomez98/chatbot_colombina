@@ -1,0 +1,13 @@
+[project]
+name = "chatbot-colombina"
+version = "0.1.0"
+description = "Chatbot for Colombina's document repository"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv",
+    "langchain",
+    "langchain-community",
+    "langchain-openai",
+    "streamlit"
+]
