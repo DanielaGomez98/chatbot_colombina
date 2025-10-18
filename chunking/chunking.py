@@ -4,7 +4,7 @@ from pathlib import Path
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 project_root = Path(__file__).parent.parent
-knowledge_base_path = project_root / "knowledge_base" / "knowledge_base.txt"
+knowledge_base_path = project_root / "knowledge_base" / "improved_knowledge_base.txt"
 
 
 def load_and_split_docs(filepath=knowledge_base_path):
@@ -37,36 +37,21 @@ def load_and_split_docs(filepath=knowledge_base_path):
 
 def parse_document(doc_raw):
     """
-    Extrae los metadatos y el contenido principal de un documento crudo.
+    Extrae los metadatos y el contenido principal de un documento delimitado.
+    Esta versión está adaptada para la base de conocimiento organizada,
+    donde cada sección (=== SECCIÓN ===) contiene texto continuo.
     """
     metadata = {}
-    content = ""
     lines = doc_raw.split('\n')
 
     filename_match = re.search(r'=== (.*) ===', lines[0])
     if filename_match:
         metadata['source_file'] = filename_match.group(1).strip()
+        metadata['title'] = metadata['source_file']
 
-    in_content_section = False
-    for line in lines[1:]:
-        if line.strip() == 'Contenido Principal':
-            in_content_section = True
-            continue
-        
-        if line.startswith(('Estructura de Headings', 'Información de Contacto', 'Redes Sociales')):
-            in_content_section = False
+    content = "\n".join(lines[1:]).strip()
 
-        if in_content_section:
-            content += line + '\n'
-        else:
-            if ':' in line:
-                key, *value = line.split(':', 1)
-                key = key.strip().lower().replace(' ', '_')
-
-                if key in ['url', 'title', 'description', 'keywords', 'scraped_date', 'source']:
-                    metadata[key] = ''.join(value).strip()
-
-    return content.strip(), metadata
+    return content, metadata
 
 
 def main():

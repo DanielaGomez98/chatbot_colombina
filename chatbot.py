@@ -50,14 +50,7 @@ with st.sidebar:
         ["gpt-oss:20b"],
         index=0
     )
-    
-    # if st.session_state.get("messages", []):
-    #     if st.button("🗑️ Limpiar Conversación", 
-    #                 type="secondary", 
-    #                 help="Borrar todo el historial de la conversación",
-    #                 use_container_width=True):
-    #         st.session_state.messages = []
-    #         st.rerun()
+
 
 with tab1:
     st.subheader("🔍 Sistema de Consulta Q&A")
@@ -67,11 +60,16 @@ with tab1:
     
     st.markdown("🚀 **Preguntas de Ejemplo**")
     example_questions = [
-        "¿En qué año se creó el Bon Bon Bum?",
-        "¿Cuál es el programa de Colombina para acompañar a sus proveedores?",
-        "¿Qué porcentaje de energía renovable utiliza Colombina en Colombia?",
-        "¿Cuáles son las plantas de producción de Colombina?",
-        "¿Qué es Colombina Energía S.A.S. E.S.P.?",
+        "¿Cómo se llama el programa de Colombina para acompañar a sus proveedores y emprendedores?",
+        "Qué porcentaje de la energía eléctrica que utiliza Colombina en sus operaciones en Colombia proviene de fuentes renovables?",
+        "¿Qué es Colombina Energía S.A.S. E.S.P. y cuál es su función principal?",
+        "¿Cuáles son los principales logros de Colombina en materia de sostenibilidad relacionados con la energía y el agua?",
+        "¿Cuándo y cómo fue fundada Colombina?",
+        "¿En cuántos países tiene presencia la empresa actualmente?",
+        "¿Cuál fue el producto icónico que impulsó la expansión internacional de Colombina?",
+        "¿Logros sostenibilidad energía y agua?",
+        "¿Qué programas sociales lidera la Fundación Colombina?",
+        "¿Qué iniciativas promueve Colombina para fomentar la equidad de género en su organización?"
     ]
     
     selected_question = st.selectbox("Selecciona una pregunta de ejemplo:", example_questions)
@@ -147,29 +145,17 @@ with tab3:
 
 
 with tab4:
+    st.subheader("💬 Chatbot Interactivo Colombina")
     st.markdown("""
-    ¡Bienvenido al asistente virtual de **Colombina**! 
-
-    **¿Cómo funciona?**
-    - 💬 **Conversación simple**: Haz preguntas sobre productos, servicios o información de Colombina
-    - 🍬 **Conocimiento especializado**: Información actualizada sobre dulces, chocolates y productos Colombina
-    - ⚡ **Respuestas rápidas**: Obtén información instantánea sobre lo que necesites
-
-    **¡Comienza** preguntando sobre productos, ingredientes, disponibilidad o cualquier tema relacionado con Colombina!
+    **Conversación interactiva con el asistente virtual de Colombina usando OpenAI.**
+    
+    Esta es una experiencia de chat completa donde puedes mantener conversaciones 
+    naturales sobre productos, servicios e información de Colombina.
     """)
-
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
 
     user_input = st.chat_input("Pregúntame sobre productos Colombina, ingredientes, disponibilidad... 🍭")
 
-    if user_input:
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        
+    if user_input:        
         with st.chat_message("user"):
             st.markdown(user_input)
         
@@ -180,12 +166,8 @@ with tab4:
                 with st.chat_message("assistant"):
                     st.markdown(respuesta)
                 
-                st.session_state.messages.append({"role": "assistant", "content": respuesta})
-                
             except Exception as e:
                 error_message = f"⚠️ Ocurrió un error: {e}"
                 
                 with st.chat_message("assistant"):
                     st.markdown(error_message)
-                
-                st.session_state.messages.append({"role": "assistant", "content": error_message})
