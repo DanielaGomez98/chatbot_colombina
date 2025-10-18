@@ -1,10 +1,8 @@
 import streamlit as st
 from llm.QA.qa_openai import procesar_pregunta_colombina
 
-# Configuración de la página
 st.set_page_config(page_title="Chatbot Colombina", page_icon="🍭", layout="wide")
 
-# Título y descripción
 st.title("🍭 Asistente Virtual de Colombina")
 
 st.markdown("""
@@ -21,7 +19,6 @@ st.markdown("""
 with st.sidebar:
     st.header("🛠️ Parámetros de Configuración")
     
-    # Parámetros del modelo
     temperatura = st.slider(
         "🌡️ Temperatura",
         min_value=0.0,
@@ -40,7 +37,6 @@ with st.sidebar:
         help="Controla la diversidad de las respuestas. Valores más bajos = más enfoque"
     )
     
-    # Separador
     st.divider()
     
     if st.session_state.get("messages", []):
@@ -51,37 +47,28 @@ with st.sidebar:
             st.session_state.messages = []
             st.rerun()
 
-# Inicializar el historial de mensajes
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Mostrar historial de conversación
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# Input del usuario
 user_input = st.chat_input("Pregúntame sobre productos Colombina, ingredientes, disponibilidad... 🍭")
 
 if user_input:
-    # Agregar mensaje del usuario al historial
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    # Mostrar mensaje del usuario
     with st.chat_message("user"):
         st.markdown(user_input)
     
-    # Procesar respuesta del asistente
     with st.spinner("Pensando..."):
         try:
-            # Aquí llamas a tu función real del chatbot
             respuesta = procesar_pregunta_colombina(user_input, temperatura, top_p)
             
-            # Mostrar respuesta del asistente
             with st.chat_message("assistant"):
                 st.markdown(respuesta)
             
-            # Agregar respuesta al historial
             st.session_state.messages.append({"role": "assistant", "content": respuesta})
             
         except Exception as e:

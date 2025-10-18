@@ -1,13 +1,20 @@
+import sys
 import json
+from pathlib import Path
 from langchain_community.llms import Ollama
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
 
-# ==========================================================
-# 1️⃣ Cargar y limitar la base de conocimiento
-# ==========================================================
-def load_knowledge_base(filepath="chunks.json", max_chunks=25):
+from logging_util.logger import get_logger
+
+logger = get_logger()
+chunks_path = project_root / "chunking" / "chunks.json"
+
+
+def load_knowledge_base(filepath=chunks_path, max_chunks=25):
     """
     Carga el archivo con los chunks del conocimiento y selecciona los más relevantes
     para evitar exceder el límite de contexto del modelo.
@@ -15,19 +22,15 @@ def load_knowledge_base(filepath="chunks.json", max_chunks=25):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    # Selecciona los fragmentos más largos (los más informativos)
     selected = sorted(data, key=lambda x: len(x["content"]), reverse=True)[:max_chunks]
     context = "\n".join([item["content"] for item in selected])
 
-    print(f"✅ Base de conocimiento cargada. {len(selected)} fragmentos seleccionados de {len(data)} totales.")
-    print(f"📏 Tamaño aproximado del contexto: {len(context.split())} palabras.\n")
+    logger.info(f"✅ Base de conocimiento cargada. {len(selected)} fragmentos seleccionados de {len(data)} totales.")
+    logger.info(f"📏 Tamaño aproximado del contexto: {len(context.split())} palabras.\n")
     return context
 
 
-# ==========================================================
-# 2️⃣ Crear la cadena de generación de preguntas FAQ
-# ==========================================================
-def create_faq_chain(knowledge_context, llm_model="gpt-oss:20b"):
+def create_faq_chain(llm_model="gpt-oss:20b"):
     """
     Crea una cadena LangChain que genera automáticamente preguntas frecuentes (FAQ)
     sobre Colombina, basadas en la base de conocimiento.
@@ -60,32 +63,22 @@ def create_faq_chain(knowledge_context, llm_model="gpt-oss:20b"):
     return chain
 
 
-# ==========================================================
-# 3️⃣ Función principal
-# ==========================================================
 def main():
-    # Cargar base de conocimiento limitada
-    context = load_knowledge_base(filepath="chunks.json", max_chunks=25)
+    context = load_knowledge_base()
 
-    # Crear la cadena FAQ
-    faq_chain = create_faq_chain(context, llm_model="gpt-oss:20b")
+    faq_chain = create_faq_chain(llm_model="gpt-oss:20b")
 
-    print("\n--- 🚀 GENERANDO PREGUNTAS FRECUENTES DE COLOMBINA ---\n")
+    logger.info("\n--- 🚀 GENERANDO PREGUNTAS FRECUENTES DE COLOMBINA ---\n")
 
-    # Invocar el modelo
     faqs = faq_chain.invoke({"context": context})
-    print(faqs)
+    logger.info(faqs)
 
-    # Guardar resultado
-    output_file = "faqs_colombina.txt"
+    output_file = project_root / "llm" / "FAQ" / "faqs_colombina.txt"
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(faqs)
 
-    print(f"\n✅ Preguntas frecuentes guardadas en '{output_file}'.")
+    logger.info(f"\n✅ Preguntas frecuentes guardadas en '{output_file}'.")
 
 
-# ==========================================================
-# 4️⃣ Ejecución directa
-# ==========================================================
 if __name__ == "__main__":
     main()

@@ -1,19 +1,17 @@
 import sys
 import json
 from pathlib import Path
+from langchain_community.llms import Ollama
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from logging_util.logger import get_logger
-from langchain_community.llms import Ollama
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-
-
-chunks_path = project_root / "chunking" / "chunks.json"
 
 logger = get_logger()
+chunks_path = project_root / "chunking" / "chunks.json"
 
 
 def load_knowledge_base(filepath=chunks_path):
