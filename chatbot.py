@@ -1,5 +1,5 @@
 import streamlit as st
-from llm.llm import procesar_pregunta_colombina
+from llm.QA.qa_openai import procesar_pregunta_colombina
 
 # Configuración de la página
 st.set_page_config(page_title="Chatbot Colombina", page_icon="🍭", layout="wide")

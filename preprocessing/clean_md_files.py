@@ -4,11 +4,12 @@ from pathlib import Path
 
 project_root = Path(__file__).parent.parent
 
-INPUT_DIR = project_root / "web_scraping" / "md_files"
+INPUT_DIR = project_root / "preprocessing" / "selected_md_files"
 OUTPUT_DIR = project_root / "preprocessing" / "cleaned_md_files"
 UNIFIED_FILE = project_root / "knowledge_base" / "knowledge_base.txt"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 def clean_markdown(text: str) -> str:
     text = re.sub(r"```[\s\S]*?```", "", text)
@@ -48,6 +49,7 @@ def clean_markdown(text: str) -> str:
 
     return "\n".join(clean_lines)
 
+
 def process_and_unify_with_titles(input_dir: str, output_dir: str, unified_path: str):
     all_clean_texts = []
 
@@ -72,6 +74,7 @@ def process_and_unify_with_titles(input_dir: str, output_dir: str, unified_path:
         f.write("\n\n".join(all_clean_texts))
 
     print(f"\n📄 Archivo unificado creado: {unified_path}")
+
 
 if __name__ == "__main__":
     process_and_unify_with_titles(INPUT_DIR, OUTPUT_DIR, UNIFIED_FILE)

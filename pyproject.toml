@@ -9,5 +9,15 @@ dependencies = [
     "langchain",
     "langchain-community",
     "langchain-openai",
-    "streamlit"
+    "streamlit",
+    "beautifulsoup4",
+    "lxml",
+    "openpyxl",
+    "pandas",
+    "pdfplumber",
+    "pypdf2",
+    "requests",
+    "selenium",
+    "urllib3",
+    "webdriver-manager"
 ]
