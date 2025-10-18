@@ -8,7 +8,7 @@ is_prod = os.getenv('IS_PROD', 'false').lower() == 'true'
 
 print(f"Is production: {is_prod}")
 
-logs_dir = Path(__file__).parent.parent / "logging" / "logs"
+logs_dir = Path(__file__).parent.parent / "logging_util" / "logs"
 logs_dir.mkdir(parents=True, exist_ok=True)
 
 logger = logging.getLogger("colombina_chatbot")

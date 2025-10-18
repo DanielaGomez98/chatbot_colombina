@@ -36,9 +36,11 @@ def load_knowledge_base(filepath=chunks_path):
             
         logger.info(f"✅ Base de conocimiento cargada y consolidada. Total de caracteres: {len(full_context)}")
         return full_context
+    
     except FileNotFoundError:
         logger.error(f"❌ Error: El archivo '{filepath}' no fue encontrado.")
         return None
+    
     except Exception as e:
         logger.error(f"❌ Ocurrió un error al cargar la base de conocimiento: {e}")
         return None
