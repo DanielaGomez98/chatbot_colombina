@@ -1,0 +1,101 @@
+{
+  "url": "https://fundacioncolombina.com/",
+  "timestamp": "2025-10-13T14:54:26.377050",
+  "title": "Fundación Colombina is under construction",
+  "description": "Fundación Colombina",
+  "keywords": [],
+  "headings": {
+    "h1": [
+      "Lo siento, estamos haciendo algunos trabajos en el sitio."
+    ],
+    "h2": [],
+    "h3": [],
+    "h4": [],
+    "h5": [],
+    "h6": []
+  },
+  "images": [
+    {
+      "src": "https://fundacioncolombina.com/wp-content/plugins/under-construction-page/themes/under_construction/under_construction.png",
+      "alt": "Construction work in progress",
+      "title": "Construction work in progress",
+      "width": "",
+      "height": "",
+      "class": "",
+      "loading": ""
+    }
+  ],
+  "links": [
+    {
+      "url": "https://www.facebook.com/fundacioncolombina",
+      "text": "",
+      "title": "",
+      "class": "",
+      "rel": ""
+    },
+    {
+      "url": "https://fundacioncolombina.com/wp-login.php",
+      "text": "",
+      "title": "",
+      "class": "",
+      "rel": ""
+    }
+  ],
+  "products": [],
+  "prices": [],
+  "contact_info": {
+    "phone": [
+      "\n\n\n \n\n\n\n\n\n\n\n\n\n",
+      "\n\n\n\n\n\n\n\n\n\n",
+      "\n\n\n\n\n\n\n\n\n\n\n\n"
+    ]
+  },
+  "social_links": [
+    {
+      "platform": "facebook",
+      "url": "https://www.facebook.com/fundacioncolombina",
+      "text": ""
+    }
+  ],
+  "metadata": {},
+  "structured_data": {},
+  "forms": [],
+  "content_text": "Gracias por tu paciencia. Estamos trabajando en el sito y volveremos enseguida.",
+  "page_structure": {
+    "total_elements": 21,
+    "divs": 10,
+    "sections": 0,
+    "articles": 0,
+    "nav_elements": 0,
+    "forms": 0,
+    "tables": 0,
+    "lists": 0,
+    "images": 1,
+    "links": 2,
+    "buttons": 0,
+    "css_classes": [
+      "col-lg-8",
+      "content",
+      "fa-2x",
+      "fa-3x",
+      "container",
+      "row",
+      "col-md-12",
+      "col-md-8",
+      "fa-facebook-square",
+      "fa",
+      "fa-wordpress",
+      "col-xs-12",
+      "loggedout",
+      "col-lg-offset-2",
+      "col-md-offset-2",
+      "col-lg-12"
+    ],
+    "ids": [
+      "hero-image",
+      "social",
+      "login-button"
+    ]
+  },
+  "performance_data": {}
+}

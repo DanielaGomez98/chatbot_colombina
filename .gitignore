@@ -180,8 +180,4 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-*.md
-*.csv
-*.json
-
 .DS_Store
