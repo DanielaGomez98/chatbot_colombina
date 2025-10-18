@@ -1,5 +1,5 @@
 import streamlit as st
-from llm.FAQ.faq_ollama import generate_faqs
+from llm.FAQ.faq_openai import generate_faqs
 from llm.QA.qa_ollama import process_question
 from llm.llm_openai import procesar_pregunta_colombina
 from llm.summary.generate_summary import generate_summary
