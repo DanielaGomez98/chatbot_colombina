@@ -44,14 +44,14 @@ def load_knowledge_base(filepath=chunks_path):
         return None
 
 
-def create_simple_qa_chain(llm_model="gpt-oss"):
+def create_simple_qa_chain(llm_model, temperature, top_p):
     """
     Crea una cadena de Q&A simple que inyecta todo el conocimiento
     en el prompt, sin usar un retriever.
     """
     logger.info(f"\n🔄 Configurando la cadena Q&A con el modelo de Ollama: '{llm_model}'...")
 
-    llm = Ollama(model=llm_model)
+    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
 
     template = """
     Eres un asistente experto de la empresa Colombina. Responde la pregunta del usuario basándote estricta y únicamente en la siguiente base de conocimiento.
@@ -79,12 +79,24 @@ def create_simple_qa_chain(llm_model="gpt-oss"):
     return simple_qa_chain
 
 
-def main():
+def process_question(llm_model, question, temperature, top_p):
     knowledge_context = load_knowledge_base()
     if knowledge_context is None:
         return
 
-    qa_chain = create_simple_qa_chain(llm_model="gpt-oss:20b")
+    qa_chain = create_simple_qa_chain(llm_model, temperature, top_p)
+
+    answer = qa_chain.invoke({"context": knowledge_context, "question": question})
+
+    return answer
+
+
+def main(temperature=0.1, top_p=0.9):
+    knowledge_context = load_knowledge_base()
+    if knowledge_context is None:
+        return
+
+    qa_chain = create_simple_qa_chain(llm_model="gpt-oss:20b", temperature=temperature, top_p=top_p)
 
     questions = [
         "¿En qué año se creó el Bon Bon Bum?",

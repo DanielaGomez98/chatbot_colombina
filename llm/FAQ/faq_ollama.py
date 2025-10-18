@@ -30,12 +30,12 @@ def load_knowledge_base(filepath=chunks_path, max_chunks=25):
     return context
 
 
-def create_faq_chain(llm_model="gpt-oss:20b"):
+def create_faq_chain(llm_model, temperature, top_p):
     """
     Crea una cadena LangChain que genera automáticamente preguntas frecuentes (FAQ)
     sobre Colombina, basadas en la base de conocimiento.
     """
-    llm = Ollama(model=llm_model)
+    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
 
     template = """
     Eres un generador de Preguntas Frecuentes (FAQ) sobre la empresa **Colombina**, 
@@ -63,10 +63,19 @@ def create_faq_chain(llm_model="gpt-oss:20b"):
     return chain
 
 
-def main():
+def generate_faqs(llm_model, temperature, top_p):
+    context = load_knowledge_base()
+    faq_chain = create_faq_chain(llm_model, temperature, top_p)
+
+    faqs = faq_chain.invoke({"context": context})
+
+    return faqs
+
+
+def main(temperature=0.1, top_p=0.9):
     context = load_knowledge_base()
 
-    faq_chain = create_faq_chain(llm_model="gpt-oss:20b")
+    faq_chain = create_faq_chain(llm_model="gpt-oss:20b", temperature=temperature, top_p=top_p)
 
     logger.info("\n--- 🚀 GENERANDO PREGUNTAS FRECUENTES DE COLOMBINA ---\n")
 

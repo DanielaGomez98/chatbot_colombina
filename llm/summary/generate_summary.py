@@ -22,8 +22,8 @@ def load_knowledge_base(filepath=chunks_path):
     return context
 
 
-def create_summary_chain(llm_model="gpt-oss:20b"):
-    llm = Ollama(model=llm_model)
+def create_summary_chain(llm_model, temperature, top_p):
+    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
 
     template = """
     Eres un asistente experto en redacción y análisis empresarial.
@@ -43,9 +43,17 @@ def create_summary_chain(llm_model="gpt-oss:20b"):
     return chain
 
 
-def main():
+def generate_summary(llm_model, temperature, top_p):
     context = load_knowledge_base()
-    summary_chain = create_summary_chain(llm_model="gpt-oss:20b")
+    summary_chain = create_summary_chain(llm_model, temperature, top_p)
+    summary = summary_chain.invoke({"context": context})
+
+    return summary
+
+
+def main(temperature=0.1, top_p=0.9):
+    context = load_knowledge_base()
+    summary_chain = create_summary_chain(llm_model="gpt-oss:20b", temperature=temperature, top_p=top_p)
 
     logger.info("\n--- 🚀 GENERANDO RESUMEN GLOBAL ---\n")
     summary = summary_chain.invoke({"context": context})
