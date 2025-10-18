@@ -14,7 +14,6 @@ st.markdown("""
 Explora diferentes aspectos de la información corporativa a través de las siguientes herramientas:
 """)
 
-# Crear pestañas
 tab1, tab2, tab3, tab4 = st.tabs([
     "🔍 Consulta Q&A", 
     "❓ Preguntas Frecuentes", 
@@ -29,7 +28,7 @@ with st.sidebar:
         "🌡️ Temperatura",
         min_value=0.0,
         max_value=1.0,
-        value=0.5,
+        value=0.1,
         step=0.1,
         help="Controla la creatividad de las respuestas. Valores más altos = más creatividad"
     )
@@ -46,8 +45,8 @@ with st.sidebar:
     st.divider()
 
     model_choice = st.selectbox(
-        "**Modelo Ollama**",
-        ["gpt-oss:20b"],
+        "**Modelo a usar:**",
+        ["gpt-oss:20b", "gpt-4o"],
         index=0
     )
 

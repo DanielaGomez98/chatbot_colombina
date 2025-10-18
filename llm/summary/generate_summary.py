@@ -1,7 +1,7 @@
 import sys
 import json
 from pathlib import Path
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -23,7 +23,7 @@ def load_knowledge_base(filepath=chunks_path):
 
 
 def create_summary_chain(llm_model, temperature, top_p):
-    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
+    llm = OllamaLLM(model=llm_model, temperature=temperature, top_p=top_p)
 
     template = """
     Eres un asistente experto en redacción y análisis empresarial.

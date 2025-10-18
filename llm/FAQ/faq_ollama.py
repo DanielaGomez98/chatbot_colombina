@@ -1,9 +1,13 @@
+import os
 import sys
 import json
 from pathlib import Path
-from langchain_community.llms import Ollama
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
+load_dotenv()
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
@@ -35,7 +39,16 @@ def create_faq_chain(llm_model, temperature, top_p):
     Crea una cadena LangChain que genera automáticamente preguntas frecuentes (FAQ)
     sobre Colombina, basadas en la base de conocimiento.
     """
-    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return """⚠️ **Falta la API Key de OpenAI**"""
+
+    llm = ChatOpenAI(
+            model=llm_model,
+            temperature=temperature,
+            top_p=top_p,
+            api_key=api_key
+        )
 
     template = """
     Eres un generador de Preguntas Frecuentes (FAQ) sobre la empresa **Colombina**, 

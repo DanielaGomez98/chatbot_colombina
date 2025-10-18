@@ -1,7 +1,7 @@
 import sys
 import json
 from pathlib import Path
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -51,7 +51,7 @@ def create_simple_qa_chain(llm_model, temperature, top_p):
     """
     logger.info(f"\n🔄 Configurando la cadena Q&A con el modelo de Ollama: '{llm_model}'...")
 
-    llm = Ollama(model=llm_model, temperature=temperature, top_p=top_p)
+    llm = OllamaLLM(model=llm_model, temperature=temperature, top_p=top_p)
 
     template = """
     Eres un asistente experto de la empresa Colombina. Responde la pregunta del usuario basándote estricta y únicamente en la siguiente base de conocimiento.
