@@ -22,7 +22,7 @@ def load_knowledge_base(filepath=chunks_path):
     return context
 
 
-def create_summary_chain(knowledge_context, llm_model="gpt-oss:20b"):
+def create_summary_chain(llm_model="gpt-oss:20b"):
     llm = Ollama(model=llm_model)
 
     template = """
@@ -45,7 +45,7 @@ def create_summary_chain(knowledge_context, llm_model="gpt-oss:20b"):
 
 def main():
     context = load_knowledge_base()
-    summary_chain = create_summary_chain(context, llm_model="gpt-oss:20b")
+    summary_chain = create_summary_chain(llm_model="gpt-oss:20b")
 
     logger.info("\n--- 🚀 GENERANDO RESUMEN GLOBAL ---\n")
     summary = summary_chain.invoke({"context": context})
