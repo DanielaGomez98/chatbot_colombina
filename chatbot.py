@@ -1,3 +1,5 @@
+"""Primera Entrega - Chatbot Colombina"""
+
 import streamlit as st
 from llm.FAQ.faq_openai import generate_faqs
 from llm.QA.qa_ollama import process_question

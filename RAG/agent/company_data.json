@@ -1,0 +1,86 @@
+{
+  "contacto": {
+    "telefono_servicio_cliente": "+57 (2) 687 5500",
+    "email_soporte": "servicio.cliente@colombina.com",
+    "linea_etica": "01 8000 180 567",
+    "direccion_principal": "Carrera 1 No. 24-56, Cali, Valle del Cauca, Colombia",
+    "email_facturacion_electronica": "recepcion-fe@colombina.com"
+  },
+  "horarios": {
+    "atencion_telelefonica_lu_vi": "8:00 AM - 6:00 PM",
+    "atencion_telelefonica_sa": "9:00 AM - 1:00 PM",
+    "oficinas_administrativas": "Lunes a Viernes, 7:30 AM - 5:30 PM"
+  },
+  "sedes_cali": [
+    {
+      "nombre": "Oficina Principal (Sur)",
+      "direccion": "Carrera 1 No. 24-56, Cali, Valle del Cauca"
+    },
+    {
+      "nombre": "Planta Colombina del Cauca (Norte)",
+      "direccion": "Vía Cali - Yumbo, Parque Industrial Arroyohondo"
+    }
+  ],
+  "nit": "890.301.244-4",
+  "info_general": {
+    "sitio_web": "www.colombina.com",
+    "fundacion": 1927,
+    "presidente": "César Caicedo Jaramillo",
+    "ventas_anuales_aprox": "Más de 800 millones de dólares",
+    "ranking_merco_talento": "Posición 11 (4ta en sector alimentos)"
+  },
+  "finanzas_inversionistas": {
+    "cupo_global_bonos": "300,000 millones de pesos colombianos",
+    "emisiones_bonos_anios": [
+      2007,
+      2009,
+      2019
+    ],
+    "codigo_buen_gobierno": "Disponible en el sitio web de inversionistas"
+  },
+  "sostenibilidad_metas": {
+    "meta_vision_30_30_andi": "Lograr el aprovechamiento del 30% de los envases y empaques puestos en el mercado para 2030",
+    "reduccion_huella_carbono": "35% por tonelada producida (en los últimos 8 años)",
+    "reduccion_consumo_agua": "21% (en los últimos 8 años)",
+    "certificacion_basura_cero": "Certificación ORO de ICONTEC para todas las plantas en Colombia",
+    "ranking_sp_global": "Top 10 mundial de empresas de alimentos con mejores prácticas de sostenibilidad (2022-2023)",
+    "fuente_energia_planta_galletas": "Granja solar (cubre el 34% del consumo de la planta en Santander de Quilichao)",
+    "fuente_energia_planta_confiteria_pasteles": "Energía solar en techos (cubre el 20% del consumo)"
+  },
+  "operaciones_globales": {
+    "numero_plantas_produccion": 7,
+    "ubicacion_plantas": "Colombia, Guatemala y España",
+    "paises_exportacion": "Más de 80 países",
+    "clientes_globales": "Más de 750,000",
+    "paises_con_operacion_propia": 16,
+    "puntos_venta_propios_colombia": 73,
+    "puntos_venta_propios_guatemala": 3,
+    "planta_mas_grande_confites": "Planta La Paila (Valle del Cauca)"
+  },
+  "marcas_y_productos": {
+    "principales_marcas": [
+      "Bon Bon Bum",
+      "Nucita",
+      "Coffee Delight",
+      "Crakeñas",
+      "Van Camp's",
+      "Piazza",
+      "La Constancia",
+      "Robin Hood"
+    ],
+    "principales_categorias": [
+      "Dulces",
+      "Chocolates",
+      "Galletas",
+      "Helados",
+      "Salsas y Aderezos",
+      "Enlatados de Pescado",
+      "Café"
+    ],
+    "alianza_cafe": "Alianza con la Federación Nacional de Cafeteros para la marca Café Buendía (desde 2001)"
+  },
+  "recursos_humanos": {
+    "portal_empleo": "Sección 'Trabaja con Nosotros' en el sitio web oficial",
+    "formulario_pqr": "Disponible en el sitio web en la sección 'Preguntas Frecuentes' o 'Contacto'"
+  }
+}
