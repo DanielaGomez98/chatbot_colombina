@@ -1,7 +1,7 @@
 import re
 import json
 from pathlib import Path
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 project_root = Path(__file__).parent.parent
 knowledge_base_path = project_root / "knowledge_base" / "improved_knowledge_base.txt"

@@ -12,6 +12,7 @@ dependencies = [
     "langchain-openai",
     "langchain-ollama",
     "langchain-chroma",
+    "langchain-text-splitters",
     "langgraph",
     "streamlit",
     "beautifulsoup4",
