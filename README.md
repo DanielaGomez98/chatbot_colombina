@@ -92,6 +92,7 @@ Un sistema integral de inteligencia artificial especializado en **Colombina**, d
 │   │   ├── colombina_agent.py          # Agente principal LangGraph
 │   │   ├── tool_rag.py                 # Herramienta RAG
 │   │   └── tool_structured_data.py     # Herramienta datos estructurados
+│   │   └── company_data.json           # 📋 Base de datos JSON estructurada
 │   ├── vector_db/                      # Base de datos vectorial
 │   │   └── load_data.py                # Carga de embeddings
 │   └── chroma_db/                      # ChromaDB persistente
