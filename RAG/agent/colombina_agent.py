@@ -163,7 +163,20 @@ def agent_node(state: AgentState):
     logger.info("🤖 Iniciando nodo agente (router)")
     messages = state['messages']
     
-    messages_for_llm = [SystemMessage(content=AGENT_SYSTEM_PROMPT)]
+    system_content = AGENT_SYSTEM_PROMPT
+    
+    if len(messages) > 1:
+        history_summary = "HISTORIAL DE CONVERSACIÓN ACTUAL:\n"
+        for i, msg in enumerate(messages[:-1]):
+            if msg.get('type') == 'human':
+                history_summary += f"Usuario: {msg['content']}\n"
+            elif msg.get('type') == 'ai':
+                history_summary += f"Asistente: {msg['content']}\n"
+        
+        system_content += f"\n\n{history_summary}\n"
+        system_content += "IMPORTANTE: Recuerda este historial cuando uses las herramientas. Pasa TODA esta conversación en el parámetro 'conversation_history' de consult_knowledge_base.\n"
+    
+    messages_for_llm = [SystemMessage(content=system_content)]
     
     current_messages = _convert_state_messages_to_objects(messages)
             
@@ -294,8 +307,8 @@ if __name__ == "__main__":
     logger.info("📝 Prueba 1: Consulta de datos estructurados (NIT)")
     run_conversation_turn(app, session_id, "¿Cuál es el NIT de la empresa?")
     
-    logger.info("📝 Prueba 2: Consulta RAG (misión y visión)")
-    run_conversation_turn(app, session_id, "Háblame sobre la misión y visión de Colombina")
+    logger.info("📝 Prueba 2: Consulta RAG")
+    run_conversation_turn(app, session_id, "¿Cuál es el presidente de la empresa?")
     
     logger.info("📝 Prueba 3: Memoria conversacional (seguimiento)")
     run_conversation_turn(app, session_id, "¿Y cuáles son sus valores principales?")

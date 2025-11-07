@@ -155,7 +155,7 @@ if __name__ == "__main__":
 
     logger.info("📝 Prueba 1: Pregunta sobre información existente")
     rag_response = consult_knowledge_base.invoke({
-        "question": "¿Cuál es la misión de Colombina?", 
+        "question": "¿Quién fue el fundador de Colombina?", 
         "conversation_history": example_history
     })
     logger.info(f"📋 Respuesta: {rag_response}")
