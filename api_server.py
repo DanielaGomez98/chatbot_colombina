@@ -18,12 +18,13 @@ from utils.logging_util.logger import get_logger
 
 logger = get_logger()
     
-logger.info("🔧 Iniciando servidor FastAPI...")
-
-uvicorn.run(
-    "api.main:app",
-    host="0.0.0.0",
-    port=8000,
-    reload=True,
-    log_level="info"
-)
+if __name__ == "__main__":
+    logger.info("🔧 Iniciando servidor FastAPI...")
+    
+    uvicorn.run(
+        "api.main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=False,
+        log_level="info"
+    )

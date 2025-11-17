@@ -16,6 +16,8 @@ from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -65,6 +67,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files (HTML interface)
+static_path = project_root / "interface" / "html"
+app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
 
 # ========== Request/Response Models ==========
 
@@ -189,8 +195,26 @@ async def root():
         "version": "2.0.0",
         "description": "API para interactuar con el agente conversacional de Colombina",
         "docs": "/docs",
-        "health": "/health"
+        "health": "/health",
+        "interface": "/interface"
     }
+
+
+@app.get(
+    "/interface",
+    tags=["General"],
+    summary="Interfaz web del chatbot",
+    description="Retorna la interfaz HTML interactiva del chatbot"
+)
+async def interface():
+    """
+    Endpoint que sirve la interfaz HTML del chatbot.
+    
+    Returns:
+        FileResponse: Archivo HTML de la interfaz
+    """
+    html_file = project_root / "interface" / "html" / "index.html"
+    return FileResponse(html_file)
 
 
 @app.get(
