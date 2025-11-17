@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colombina - Asistente Virtual</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🍭</div>
+                    <h1>Colombina</h1>
+                </div>
+                <p class="tagline">Asistente Virtual Inteligente</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Chat Container -->
+    <main class="main-container">
+        <div class="container">
+            <div class="chat-wrapper">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-header-content">
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span class="status-text">En línea</span>
+                        </div>
+                        <div class="session-info">
+                            <span class="session-label">Sesión:</span>
+                            <span class="session-id" id="sessionId">Iniciando...</span>
+                        </div>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button type="button" class="new-chat-btn" id="newChatBtn" title="Nueva conversación">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            Nueva conversación
+                        </button>
+                        <button type="button" class="settings-btn" id="settingsBtn" title="Configuración del modelo">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Model Settings Panel -->
+                <div class="settings-panel" id="settingsPanel" style="display: none;">
+                    <div class="settings-header">
+                        <h3>⚙️ Configuración del Modelo</h3>
+                        <button type="button" class="close-settings" id="closeSettings">×</button>
+                    </div>
+                    <div class="settings-content">
+                        <div class="setting-item">
+                            <label for="temperatureSlider">
+                                Temperatura: <span id="temperatureValue">0.0</span>
+                                <span class="setting-hint">Controla la creatividad (0 = preciso, 2 = creativo)</span>
+                            </label>
+                            <input type="range" id="temperatureSlider" min="0" max="2" step="0.1" value="0">
+                        </div>
+                        <div class="setting-item">
+                            <label for="topPSlider">
+                                Top P: <span id="topPValue">0.9</span>
+                                <span class="setting-hint">Diversidad de respuestas (0-1)</span>
+                            </label>
+                            <input type="range" id="topPSlider" min="0" max="1" step="0.05" value="0.9">
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxTokensInput">
+                                Max Tokens: <span id="maxTokensValue">Auto</span>
+                                <span class="setting-hint">Límite de longitud de respuesta</span>
+                            </label>
+                            <input type="number" id="maxTokensInput" min="50" max="4096" step="50" placeholder="Auto">
+                        </div>
+                        <button type="button" class="reset-settings-btn" id="resetSettings">Restaurar valores por defecto</button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Message -->
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <div class="avatar bot-avatar">🤖</div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <p>¡Hola! Soy el asistente virtual de Colombina. 🍭</p>
+                                <p>Puedo ayudarte con información sobre nuestra empresa, productos, historia y mucho más. ¿En qué puedo asistirte hoy?</p>
+                            </div>
+                            <div class="message-time">Ahora</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="message-avatar">
+                        <div class="avatar bot-avatar">🤖</div>
+                    </div>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <form class="chat-input-form" id="chatForm">
+                        <div class="input-wrapper">
+                            <textarea 
+                                class="chat-input" 
+                                id="messageInput" 
+                                placeholder="Escribe tu pregunta aquí... (ej: ¿Cuál es el NIT de Colombina?)"
+                                rows="1"
+                                maxlength="2000"
+                            ></textarea>
+                            <button type="submit" class="send-btn" id="sendBtn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="input-footer">
+                            <span class="char-count" id="charCount">0/2000</span>
+                            <span class="powered-by">
+                                Powered by RAG + AI
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="suggestions" id="suggestions">
+                <div class="suggestions-header">💡 Preguntas sugeridas</div>
+                <div class="suggestions-grid">
+                    <button type="button" class="suggestion-btn" data-question="¿Cuál es el NIT de Colombina?">
+                        ¿Cuál es el NIT de Colombina?
+                    </button>
+                    <button type="button" class="suggestion-btn" data-question="¿Quién fundó Colombina?">
+                        ¿Quién fundó Colombina?
+                    </button>
+                    <button type="button" class="suggestion-btn" data-question="¿Cuál es la política de Colombina sobre el uso del agua?">
+                        ¿Cuál es la política de Colombina sobre el uso del agua?
+                    </button>
+                    <button type="button" class="suggestion-btn" data-question="¿Cuál es el presidente de la empresa?">
+                        ¿Cuál es el presidente de la empresa?
+                    </button>
+                    <button type="button" class="suggestion-btn" data-question="Cuéntame sobre Bon Bon Bum">
+                        Cuéntame sobre Bon Bon Bum
+                    </button>
+                    <button type="button" class="suggestion-btn" data-question="¿Cuáles son las sedes de Colombina?">
+                        ¿Cuáles son las sedes de Colombina?
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Colombina. Asistente Virtual con IA.</p>
+        </div>
+    </footer>
+
+    <!-- Error Toast -->
+    <div class="toast error-toast" id="errorToast">
+        <div class="toast-icon">⚠️</div>
+        <div class="toast-content">
+            <div class="toast-title">Advertencia</div>
+            <div class="toast-message" id="toastMessage"></div>
+        </div>
+        <button type="button" class="toast-close" id="toastClose">×</button>
+    </div>
+
+    <script src="static/app.js"></script>
+</body>
+</html>
