@@ -1,5 +1,5 @@
 // ========== Configuration ==========
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://chatbotcolombina-production.up.railway.app';
 const MAX_MESSAGE_LENGTH = 2000;
 const TYPING_DELAY = 500; // ms
 
@@ -421,7 +421,7 @@ async function checkApiHealth() {
         }
     } catch (error) {
         console.warn('⚠️ No se pudo conectar con la API:', error.message);
-        showError('Advertencia: No se pudo conectar con el servidor. Asegúrate de que la API esté ejecutándose en http://localhost:8000');
+        showError('Advertencia: No se pudo conectar con el servidor.');
     }
 }
 
