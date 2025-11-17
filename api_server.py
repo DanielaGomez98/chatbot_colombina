@@ -14,11 +14,12 @@ O alternativamente:
 """
 
 import os
-import uvicorn
 from dotenv import load_dotenv
-from utils.logging_util.logger import get_logger
 
 load_dotenv()
+
+import uvicorn
+from utils.logging_util.logger import get_logger
 
 logger = get_logger()
     
