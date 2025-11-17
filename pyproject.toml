@@ -24,5 +24,8 @@ dependencies = [
     "requests",
     "selenium",
     "urllib3",
-    "webdriver-manager"
+    "webdriver-manager",
+    "fastapi",
+    "uvicorn",
+    "pydantic"
 ]

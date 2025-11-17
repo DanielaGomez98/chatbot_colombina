@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-project_root = Path(__file__).parent.parent
-knowledge_base_path = project_root / "knowledge_base" / "improved_knowledge_base.txt"
+project_root = Path(__file__).parent.parent.parent
+knowledge_base_path = project_root / "utils" / "knowledge_base" / "improved_knowledge_base.txt"
 
 
 def load_and_split_docs(filepath=knowledge_base_path):
@@ -92,7 +92,7 @@ def main():
             'metadata': chunk.metadata
         })
 
-    output_filepath = project_root / "chunking" / "chunks.json"
+    output_filepath = project_root / "utils" / "chunking" / "chunks.json"
     with open(output_filepath, 'w', encoding='utf-8') as f:
         json.dump(output_chunks, f, indent=2, ensure_ascii=False)
 

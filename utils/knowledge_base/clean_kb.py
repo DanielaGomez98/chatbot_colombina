@@ -2,9 +2,9 @@ import re
 from pathlib import Path
 from collections import defaultdict
 
-project_root = Path(__file__).parent.parent
-INPUT_FILE = project_root / "knowledge_base" / "knowledge_base.txt"
-OUTPUT_FILE = project_root / "knowledge_base" / "improved_knowledge_base.txt"
+project_root = Path(__file__).parent.parent.parent
+INPUT_FILE = project_root / "utils" / "knowledge_base" / "knowledge_base.txt"
+OUTPUT_FILE = project_root / "utils" / "knowledge_base" / "improved_knowledge_base.txt"
 
 
 SECCIONES = {

@@ -8,10 +8,10 @@ from langchain_core.output_parsers import StrOutputParser
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from logging_util.logger import get_logger
+from utils.logging_util.logger import get_logger
 
 logger = get_logger()
-chunks_path = project_root / "chunking" / "chunks.json"
+chunks_path = project_root / "utils" / "chunking" / "chunks.json"
 
 
 def load_knowledge_base(filepath=chunks_path):

@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
-logs_dir = Path(__file__).parent.parent / "logging_util" / "logs"
+logs_dir = Path(__file__).parent.parent.parent / "utils" / "logging_util" / "logs"
 logs_dir.mkdir(parents=True, exist_ok=True)
 
 logger = logging.getLogger("colombina_chatbot")

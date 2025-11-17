@@ -2,11 +2,11 @@ import os
 import re
 from pathlib import Path
 
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).parent.parent.parent
 
-INPUT_DIR = project_root / "preprocessing" / "selected_md_files"
-OUTPUT_DIR = project_root / "preprocessing" / "cleaned_md_files"
-UNIFIED_FILE = project_root / "knowledge_base" / "knowledge_base.txt"
+INPUT_DIR = project_root / "utils" / "preprocessing" / "selected_md_files"
+OUTPUT_DIR = project_root / "utils" / "preprocessing" / "cleaned_md_files"
+UNIFIED_FILE = project_root / "utils" / "knowledge_base" / "knowledge_base.txt"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

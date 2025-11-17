@@ -8,7 +8,7 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from logging_util.logger import get_logger
+from utils.logging_util.logger import get_logger
 
 logger = get_logger()
 
