@@ -15,7 +15,10 @@ O alternativamente:
 
 import os
 import uvicorn
+from dotenv import load_dotenv
 from utils.logging_util.logger import get_logger
+
+load_dotenv()
 
 logger = get_logger()
     
