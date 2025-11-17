@@ -39,12 +39,52 @@
                             <span class="session-id" id="sessionId">Iniciando...</span>
                         </div>
                     </div>
-                    <button type="button" class="new-chat-btn" id="newChatBtn" title="Nueva conversación">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14M5 12h14"/>
-                        </svg>
-                        Nueva conversación
-                    </button>
+                    <div class="chat-header-actions">
+                        <button type="button" class="new-chat-btn" id="newChatBtn" title="Nueva conversación">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            Nueva conversación
+                        </button>
+                        <button type="button" class="settings-btn" id="settingsBtn" title="Configuración del modelo">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Model Settings Panel -->
+                <div class="settings-panel" id="settingsPanel" style="display: none;">
+                    <div class="settings-header">
+                        <h3>⚙️ Configuración del Modelo</h3>
+                        <button type="button" class="close-settings" id="closeSettings">×</button>
+                    </div>
+                    <div class="settings-content">
+                        <div class="setting-item">
+                            <label for="temperatureSlider">
+                                Temperatura: <span id="temperatureValue">0.0</span>
+                                <span class="setting-hint">Controla la creatividad (0 = preciso, 2 = creativo)</span>
+                            </label>
+                            <input type="range" id="temperatureSlider" min="0" max="2" step="0.1" value="0">
+                        </div>
+                        <div class="setting-item">
+                            <label for="topPSlider">
+                                Top P: <span id="topPValue">0.9</span>
+                                <span class="setting-hint">Diversidad de respuestas (0-1)</span>
+                            </label>
+                            <input type="range" id="topPSlider" min="0" max="1" step="0.05" value="0.9">
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxTokensInput">
+                                Max Tokens: <span id="maxTokensValue">Auto</span>
+                                <span class="setting-hint">Límite de longitud de respuesta</span>
+                            </label>
+                            <input type="number" id="maxTokensInput" min="50" max="4096" step="50" placeholder="Auto">
+                        </div>
+                        <button type="button" class="reset-settings-btn" id="resetSettings">Restaurar valores por defecto</button>
+                    </div>
                 </div>
 
                 <!-- Chat Messages -->
@@ -94,9 +134,7 @@
                             </button>
                         </div>
                         <div class="input-footer">
-                            <span class="char-count">
-                                <span id="charCount">0</span>/2000
-                            </span>
+                            <span class="char-count" id="charCount">0/2000</span>
                             <span class="powered-by">
                                 Powered by RAG + AI
                             </span>
@@ -115,11 +153,11 @@
                     <button type="button" class="suggestion-btn" data-question="¿Quién fundó Colombina?">
                         ¿Quién fundó Colombina?
                     </button>
-                    <button type="button" class="suggestion-btn" data-question="¿Cuál es la misión de Colombina?">
-                        ¿Cuál es la misión de Colombina?
+                    <button type="button" class="suggestion-btn" data-question="¿Cuál es la política de Colombina sobre el uso del agua?">
+                        ¿Cuál es la política de Colombina sobre el uso del agua?
                     </button>
-                    <button type="button" class="suggestion-btn" data-question="¿Qué productos fabrica Colombina?">
-                        ¿Qué productos fabrica Colombina?
+                    <button type="button" class="suggestion-btn" data-question="¿Cuál es el presidente de la empresa?">
+                        ¿Cuál es el presidente de la empresa?
                     </button>
                     <button type="button" class="suggestion-btn" data-question="Cuéntame sobre Bon Bon Bum">
                         Cuéntame sobre Bon Bon Bum
@@ -143,7 +181,7 @@
     <div class="toast error-toast" id="errorToast">
         <div class="toast-icon">⚠️</div>
         <div class="toast-content">
-            <div class="toast-title">Error</div>
+            <div class="toast-title">Advertencia</div>
             <div class="toast-message" id="toastMessage"></div>
         </div>
         <button type="button" class="toast-close" id="toastClose">×</button>

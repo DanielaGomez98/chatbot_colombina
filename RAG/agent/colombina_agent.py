@@ -119,8 +119,54 @@ Tienes acceso a dos herramientas:
 """
 
 
-llm_router = ChatOpenAI(model="gpt-4o", api_key=API_KEY, temperature=0)
-llm_with_tools = llm_router.bind_tools(tools)
+def get_llm_with_params(temperature: float = 0.0, top_p: float = 0.9, max_tokens: int = None):
+    """
+    Retorna un LLM configurado con parámetros personalizados.
+    
+    Args:
+        temperature (float): Controla la aleatoriedad (0.0-2.0)
+        top_p (float): Nucleus sampling (0.0-1.0)
+        max_tokens (int): Máximo de tokens en la respuesta
+    
+    Returns:
+        ChatOpenAI: LLM configurado con los parámetros especificados
+    """
+    llm_params = {
+        "model": "gpt-4o",
+        "api_key": API_KEY,
+        "temperature": temperature,
+        "top_p": top_p
+    }
+    
+    if max_tokens is not None:
+        llm_params["max_tokens"] = max_tokens
+    
+    return ChatOpenAI(**llm_params)
+
+
+# Global variables for dynamic model parameters
+_model_params = {
+    "temperature": 0.0,
+    "top_p": 0.9,
+    "max_tokens": None
+}
+
+
+def set_model_params(temperature: float = 0.0, top_p: float = 0.9, max_tokens: int = None):
+    """
+    Configura los parámetros del modelo para el próximo invoke.
+    
+    Args:
+        temperature (float): Controla la aleatoriedad (0.0-2.0)
+        top_p (float): Nucleus sampling (0.0-1.0)
+        max_tokens (int): Máximo de tokens en la respuesta
+    """
+    global _model_params
+    _model_params = {
+        "temperature": temperature,
+        "top_p": top_p,
+        "max_tokens": max_tokens
+    }
 
 
 def _convert_state_messages_to_objects(messages: List[dict]) -> List[BaseMessage]:
@@ -159,9 +205,28 @@ def _convert_state_messages_to_objects(messages: List[dict]) -> List[BaseMessage
 def agent_node(state: AgentState):
     """
     El nodo principal del agente. Decide si llamar a una herramienta o responder directamente.
+    Lee los parámetros del modelo desde la variable global _model_params.
+    
+    Args:
+        state: Estado del grafo
     """
+    global _model_params
     logger.info("🤖 Iniciando nodo agente (router)")
+    
+    # Use global model params if not provided
+    temp = _model_params.get("temperature", 0.0)
+    top_p_val = _model_params.get("top_p", 0.9)
+    max_tok = _model_params.get("max_tokens", None)
+    
+    # Log model parameters if customized
+    if temp != 0.0 or top_p_val != 1.0 or max_tok is not None:
+        logger.info(f"🎛️ Parámetros del modelo - temp: {temp}, top_p: {top_p_val}, max_tokens: {max_tok}")
+    
     messages = state['messages']
+    
+    # Get LLM with custom parameters
+    current_llm = get_llm_with_params(temp, top_p_val, max_tok)
+    current_llm_with_tools = current_llm.bind_tools(tools)
     
     system_content = AGENT_SYSTEM_PROMPT
     
@@ -184,7 +249,7 @@ def agent_node(state: AgentState):
 
     try:
         logger.info("🔄 Invocando LLM con herramientas...")
-        response = llm_with_tools.invoke(messages_for_llm)
+        response = current_llm_with_tools.invoke(messages_for_llm)
         logger.info(f"✅ Respuesta LLM obtenida: {response.content[:50]}...")
         if response.tool_calls:
             logger.info(f"🔧 Llamadas a herramientas detectadas: {len(response.tool_calls)}")

@@ -23,7 +23,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from utils.logging_util.logger import get_logger
-from RAG.agent.colombina_agent import app as agent_app
+from RAG.agent.colombina_agent import app as agent_app, set_model_params
 
 logger = get_logger()
 
@@ -81,11 +81,16 @@ class ChatRequest(BaseModel):
     Attributes:
         message (str): Mensaje del usuario para el chatbot
         session_id (str): Identificador único de la sesión de conversación
+        temperature (Optional[float]): Controla la aleatoriedad (0.0-2.0, default: 0.0)
+        top_p (Optional[float]): Nucleus sampling (0.0-1.0, default: 1.0)
+        max_tokens (Optional[int]): Máximo de tokens en la respuesta (default: None)
     
     Examples:
         {
             "message": "¿Cuál es la misión de Colombina?",
-            "session_id": "user-123-session-abc"
+            "session_id": "user-123-session-abc",
+            "temperature": 0.7,
+            "top_p": 0.9
         }
     """
     message: str = Field(
@@ -101,6 +106,24 @@ class ChatRequest(BaseModel):
         max_length=200,
         description="ID único de sesión para mantener el contexto conversacional",
         example="user-123-session-456"
+    )
+    temperature: Optional[float] = Field(
+        default=0.0,
+        ge=0.0,
+        le=2.0,
+        description="Controla la creatividad de las respuestas (0.0 = determinista, 2.0 = muy creativo)"
+    )
+    top_p: Optional[float] = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        description="Nucleus sampling: controla la diversidad de tokens (0.0-1.0)"
+    )
+    max_tokens: Optional[int] = Field(
+        default=None,
+        ge=1,
+        le=4096,
+        description="Máximo número de tokens en la respuesta"
     )
 
 
@@ -314,6 +337,10 @@ async def chat(request: ChatRequest):
         logger.info(f"💬 Nuevo mensaje - Session: {request.session_id}")
         logger.info(f"👤 Mensaje del usuario: {request.message}")
         
+        # Log model parameters if customized
+        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+            logger.info(f"🎛️  Parámetros del modelo - temp: {request.temperature}, top_p: {request.top_p}, max_tokens: {request.max_tokens}")
+        
         if not request.message.strip():
             logger.warning("⚠️ Mensaje vacío recibido")
             raise HTTPException(
@@ -331,6 +358,18 @@ async def chat(request: ChatRequest):
         config = {"configurable": {"thread_id": request.session_id}}
 
         input_message = {"type": "human", "content": request.message}
+
+        # Set model parameters globally before invoking the agent
+        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+            logger.info("🔧 Configurando parámetros personalizados del modelo")
+            set_model_params(
+                temperature=request.temperature,
+                top_p=request.top_p,
+                max_tokens=request.max_tokens
+            )
+        else:
+            logger.info("🔧 Usando parámetros por defecto del modelo")
+            set_model_params(temperature=0.0, top_p=1.0, max_tokens=None)
 
         logger.info("🤖 Invocando agente conversacional...")
         final_state = agent_app.invoke(

@@ -6,6 +6,11 @@ const TYPING_DELAY = 500; // ms
 // ========== State Management ==========
 let sessionId = generateSessionId();
 let isProcessing = false;
+let modelSettings = {
+    temperature: 0.0,
+    top_p: 0.9,
+    max_tokens: null
+};
 
 // ========== DOM Elements ==========
 const chatMessages = document.getElementById('chatMessages');
@@ -20,6 +25,18 @@ const suggestionBtns = document.querySelectorAll('.suggestion-btn');
 const errorToast = document.getElementById('errorToast');
 const toastMessage = document.getElementById('toastMessage');
 const toastClose = document.getElementById('toastClose');
+
+// Settings elements
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const closeSettings = document.getElementById('closeSettings');
+const temperatureSlider = document.getElementById('temperatureSlider');
+const temperatureValue = document.getElementById('temperatureValue');
+const topPSlider = document.getElementById('topPSlider');
+const topPValue = document.getElementById('topPValue');
+const maxTokensInput = document.getElementById('maxTokensInput');
+const maxTokensValue = document.getElementById('maxTokensValue');
+const resetSettings = document.getElementById('resetSettings');
 
 // ========== Utility Functions ==========
 function generateSessionId() {
@@ -157,15 +174,24 @@ function clearWelcomeMessage() {
 // ========== API Functions ==========
 async function sendMessage(message) {
     try {
+        const requestBody = {
+            message: message,
+            session_id: sessionId,
+            temperature: modelSettings.temperature,
+            top_p: modelSettings.top_p
+        };
+        
+        // Only include max_tokens if it's set
+        if (modelSettings.max_tokens !== null) {
+            requestBody.max_tokens = modelSettings.max_tokens;
+        }
+        
         const response = await fetch(`${API_BASE_URL}/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                message: message,
-                session_id: sessionId
-            })
+            body: JSON.stringify(requestBody)
         });
         
         if (!response.ok) {
@@ -292,6 +318,53 @@ function handleInputResize() {
     messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
 }
 
+function toggleSettings() {
+    const isVisible = settingsPanel.style.display !== 'none';
+    settingsPanel.style.display = isVisible ? 'none' : 'block';
+}
+
+function updateTemperature() {
+    const value = parseFloat(temperatureSlider.value);
+    modelSettings.temperature = value;
+    temperatureValue.textContent = value.toFixed(1);
+}
+
+function updateTopP() {
+    const value = parseFloat(topPSlider.value);
+    modelSettings.top_p = value;
+    topPValue.textContent = value.toFixed(2);
+}
+
+function updateMaxTokens() {
+    const value = maxTokensInput.value;
+    if (value === '' || value === null) {
+        modelSettings.max_tokens = null;
+        maxTokensValue.textContent = 'Auto';
+    } else {
+        modelSettings.max_tokens = parseInt(value);
+        maxTokensValue.textContent = value;
+    }
+}
+
+function resetModelSettings() {
+    modelSettings = {
+        temperature: 0.0,
+        top_p: 0.9,
+        max_tokens: null
+    };
+    
+    temperatureSlider.value = 0;
+    temperatureValue.textContent = '0.0';
+    
+    topPSlider.value = 0.9;
+    topPValue.textContent = '0.9';
+    
+    maxTokensInput.value = '';
+    maxTokensValue.textContent = 'Auto';
+    
+    showError('Configuración restaurada a valores por defecto');
+}
+
 // ========== Initialization ==========
 function initializeChat() {
     // Display session ID (first 8 characters)
@@ -318,6 +391,14 @@ function initializeChat() {
     
     newChatBtn.addEventListener('click', handleNewChat);
     toastClose.addEventListener('click', hideError);
+    
+    // Settings event listeners
+    settingsBtn.addEventListener('click', toggleSettings);
+    closeSettings.addEventListener('click', toggleSettings);
+    temperatureSlider.addEventListener('input', updateTemperature);
+    topPSlider.addEventListener('input', updateTopP);
+    maxTokensInput.addEventListener('input', updateMaxTokens);
+    resetSettings.addEventListener('click', resetModelSettings);
     
     // Focus input on load
     messageInput.focus();
