@@ -85,7 +85,7 @@ class ChatRequest(BaseModel):
         message (str): Mensaje del usuario para el chatbot
         session_id (str): Identificador único de la sesión de conversación
         temperature (Optional[float]): Controla la aleatoriedad (0.0-2.0, default: 0.0)
-        top_p (Optional[float]): Nucleus sampling (0.0-1.0, default: 1.0)
+        top_p (Optional[float]): Nucleus sampling (0.0-1.0, default: 0.9)
         max_tokens (Optional[int]): Máximo de tokens en la respuesta (default: None)
     
     Examples:
@@ -117,7 +117,7 @@ class ChatRequest(BaseModel):
         description="Controla la creatividad de las respuestas (0.0 = determinista, 2.0 = muy creativo)"
     )
     top_p: Optional[float] = Field(
-        default=1.0,
+        default=0.9,
         ge=0.0,
         le=1.0,
         description="Nucleus sampling: controla la diversidad de tokens (0.0-1.0)"
@@ -341,7 +341,7 @@ async def chat(request: ChatRequest):
         logger.info(f"👤 Mensaje del usuario: {request.message}")
         
         # Log model parameters if customized
-        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+        if request.temperature != 0.0 or request.top_p != 0.9 or request.max_tokens is not None:
             logger.info(f"🎛️  Parámetros del modelo - temp: {request.temperature}, top_p: {request.top_p}, max_tokens: {request.max_tokens}")
         
         if not request.message.strip():
@@ -363,7 +363,7 @@ async def chat(request: ChatRequest):
         input_message = {"type": "human", "content": request.message}
 
         # Set model parameters globally before invoking the agent
-        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+        if request.temperature != 0.0 or request.top_p != 0.9 or request.max_tokens is not None:
             logger.info("🔧 Configurando parámetros personalizados del modelo")
             set_model_params(
                 temperature=request.temperature,
@@ -372,7 +372,7 @@ async def chat(request: ChatRequest):
             )
         else:
             logger.info("🔧 Usando parámetros por defecto del modelo")
-            set_model_params(temperature=0.0, top_p=1.0, max_tokens=None)
+            set_model_params(temperature=0.0, top_p=0.9, max_tokens=None)
 
         logger.info("🤖 Invocando agente conversacional...")
         final_state = agent_app.invoke(
