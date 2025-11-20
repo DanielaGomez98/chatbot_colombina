@@ -341,7 +341,7 @@ async def chat(request: ChatRequest):
         logger.info(f"👤 Mensaje del usuario: {request.message}")
         
         # Log model parameters if customized
-        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+        if request.temperature != 0.0 or request.top_p != 0.9 or request.max_tokens is not None:
             logger.info(f"🎛️  Parámetros del modelo - temp: {request.temperature}, top_p: {request.top_p}, max_tokens: {request.max_tokens}")
         
         if not request.message.strip():
@@ -363,7 +363,7 @@ async def chat(request: ChatRequest):
         input_message = {"type": "human", "content": request.message}
 
         # Set model parameters globally before invoking the agent
-        if request.temperature != 0.0 or request.top_p != 1.0 or request.max_tokens is not None:
+        if request.temperature != 0.0 or request.top_p != 0.9 or request.max_tokens is not None:
             logger.info("🔧 Configurando parámetros personalizados del modelo")
             set_model_params(
                 temperature=request.temperature,
