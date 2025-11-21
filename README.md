@@ -132,8 +132,8 @@ Un sistema integral de inteligencia artificial especializado en **Colombina**, d
 │
 ├── api_server.py                       # 🆕 Servidor de producción
 ├── .env.example                        # 🆕 Plantilla de variables de entorno
-├── Procfile                            # 🆕 Configuración Railway (si existe)
-└── railway.json                        # 🆕 Config Railway (si existe)
+├── Procfile                            # 🆕 Comando de inicio para Railway
+└── railway.json                        # 🆕 Configuración de Railway (healthcheck, restart policy)
 ```
 
 #### Configuración de Despliegue:
@@ -179,6 +179,8 @@ LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 - **Pydantic** - Validación de datos y modelos
 - **HTML/CSS/JavaScript** - Interfaz web nativa
 - **Environment Variables** - Configuración segura
+- **Nixpacks** - Sistema de build automático de Railway
+- **Healthchecks** - Monitoreo de disponibilidad del servicio
 
 ---
 
@@ -232,6 +234,26 @@ ollama pull gpt-oss:20b
 El sistema está desplegado en Railway y accesible públicamente 24/7.
 
 **URL de producción**: `https://tu-app.railway.app` (configurar según tu deployment)
+
+**Archivos de configuración Railway:**
+
+1. **`Procfile`** - Define el comando de inicio:
+   ```
+   web: python api_server.py
+   ```
+
+2. **`railway.json`** - Configuración de despliegue:
+   - Healthcheck en `/health`
+   - Política de reintentos automáticos
+   - Timeout de 300 segundos
+   - Builder Nixpacks
+
+3. **Variables de entorno en Railway** (configuradas en la plataforma):
+   - `OPENAI_API_KEY` - Obligatoria
+   - `LANGCHAIN_TRACING_V2` - Opcional
+   - `LANGCHAIN_API_KEY` - Opcional
+   - `LANGCHAIN_PROJECT` - Opcional
+   - `PORT` - Asignada automáticamente por Railway
 
 #### Endpoints Disponibles:
 
@@ -499,10 +521,39 @@ Interfaz web moderna en HTML/CSS/JavaScript:
 - Variables opcionales (LangSmith para trazabilidad)
 - Documentación detallada
 
-**Railway Configuration**:
-- Configuración de healthcheck
-- Política de reintentos
-- Variables de entorno en la plataforma
+**`Procfile`**: Archivo de configuración de Railway que especifica el comando de inicio:
+```
+web: python api_server.py
+```
+Este archivo le indica a Railway cómo ejecutar la aplicación en producción.
+
+**`railway.json`**: Configuración avanzada de Railway con:
+```json
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "python api_server.py",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}
+```
+Características:
+- **Healthcheck automático**: Verifica `/health` cada cierto tiempo
+- **Restart policy**: Reinicia automáticamente si falla
+- **Timeout configurado**: 300 segundos para inicio
+- **Builder optimizado**: Usa Nixpacks para detección automática de dependencias
+
+**Railway Platform Configuration**:
+- Detección automática de Python y dependencias
+- Puerto asignado dinámicamente por Railway
+- Variables de entorno configuradas en la plataforma
+- Despliegue automático desde GitHub
 
 ---
 
