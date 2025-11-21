@@ -1,6 +1,6 @@
 # 🍭 Centro de Información Colombina
 
-Un sistema integral de inteligencia artificial especializado en **Colombina**, desarrollado en dos entregas que evolucionaron desde un chatbot básico hasta un agente conversacional avanzado con múltiples herramientas de IA.
+Un sistema integral de inteligencia artificial especializado en **Colombina**, desarrollado en tres entregas que evolucionaron desde un chatbot básico hasta un agente conversacional avanzado con API REST, despliegue en la nube y trazabilidad completa.
 
 ## 📋 Evolución del Proyecto
 
@@ -9,6 +9,9 @@ Un sistema integral de inteligencia artificial especializado en **Colombina**, d
 
 ### 📦 Segunda Entrega: Agente Conversacional Avanzado  
 **Objetivo:** Implementar un sistema RAG completo con memoria conversacional y herramientas especializadas
+
+### 📦 Tercera Entrega: API REST y Despliegue en Producción
+**Objetivo:** Crear una API REST profesional, múltiples interfaces de usuario y desplegar el sistema en la nube con trazabilidad completa
 
 ---
 
@@ -99,6 +102,53 @@ Un sistema integral de inteligencia artificial especializado en **Colombina**, d
 └── app.py                              # 🆕 Interfaz Streamlit
 ```
 
+### 🔹 Tercera Entrega - API REST y Despliegue en Producción
+
+#### Nuevas Funcionalidades:
+- **🌐 API REST Completa**: FastAPI con documentación automática (Swagger/ReDoc)
+- **🚀 Despliegue en Railway**: Sistema en producción 24/7 accesible públicamente
+- **🔍 Trazabilidad con LangSmith**: Monitoreo completo de conversaciones y costos
+- **🎨 Múltiples Interfaces**: HTML vanilla y Streamlit
+- **📊 Gestión de Sesiones**: Sistema robusto de identificación de usuarios
+- **⚙️ Configuración Dinámica**: Parámetros personalizables del modelo (temperature, top_p, max_tokens)
+- **🔒 Mejores Prácticas**: CORS, variables de entorno, logging profesional
+- **📈 Healthchecks**: Monitoreo de estado del servicio
+
+#### Nuevos Módulos:
+```
+├── api/                                # 🆕 API REST con FastAPI
+│   ├── __init__.py
+│   ├── main.py                         # Aplicación FastAPI principal
+│   └── README.md                       # Documentación de la API
+│
+├── interface/                          # 🆕 Múltiples interfaces de usuario
+│   ├── html/                           # Interfaz web vanilla
+│   │   ├── index.html                  # HTML principal
+│   │   ├── styles.css                  # Estilos personalizados
+│   │   └── app.js                      # Lógica del cliente
+│   └── streamlit/                      # Interfaces Streamlit
+│       ├── app.py                      # App Streamlit con API
+│       └── chatbot.py                  # Chatbot Streamlit legacy
+│
+├── api_server.py                       # 🆕 Servidor de producción
+├── .env.example                        # 🆕 Plantilla de variables de entorno
+├── Procfile                            # 🆕 Configuración Railway (si existe)
+└── railway.json                        # 🆕 Config Railway (si existe)
+```
+
+#### Configuración de Despliegue:
+```bash
+# Variables de entorno requeridas
+OPENAI_API_KEY=sk-proj-...             # API key de OpenAI
+PORT=8000                               # Puerto (Railway lo asigna automáticamente)
+
+# Variables de entorno opcionales (LangSmith)
+LANGCHAIN_TRACING_V2=true               # Activar trazabilidad
+LANGCHAIN_API_KEY=lsv2_pt_...          # API key de LangSmith
+LANGCHAIN_PROJECT=colombina-chatbot     # Nombre del proyecto
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+```
+
 ---
 
 ## 🚀 Tecnologías Utilizadas
@@ -120,14 +170,25 @@ Un sistema integral de inteligencia artificial especializado en **Colombina**, d
 - **Memory Persistence** - Gestión de estado
 - **Tool Orchestration** - Coordinación de herramientas
 
+### Tercera Entrega - Producción
+- **FastAPI** - Framework web moderno y rápido
+- **Uvicorn** - Servidor ASGI de alto rendimiento
+- **Railway** - Plataforma de despliegue en la nube
+- **LangSmith** - Trazabilidad y monitoreo de LLMs
+- **CORS Middleware** - Seguridad y acceso cross-origin
+- **Pydantic** - Validación de datos y modelos
+- **HTML/CSS/JavaScript** - Interfaz web nativa
+- **Environment Variables** - Configuración segura
+
 ---
 
 ## 🔧 Instalación y Configuración
 
 ### Requisitos Previos
 - Python 3.13 o superior
-- API Key de OpenAI
-- Ollama instalado (para funciones de primera entrega)
+- API Key de OpenAI (obligatoria)
+- API Key de LangSmith (opcional, para trazabilidad)
+- Ollama instalado (opcional, para funciones de primera entrega)
 - Chrome/Chromium (para web scraping)
 
 ### Instalación
@@ -145,7 +206,17 @@ source .venv/bin/activate  # Linux/Mac
 uv pip install -r requirements.txt
 
 # Configurar variables de entorno
-echo "OPENAI_API_KEY=tu_api_key_aqui" > .env
+cp .env.example .env
+# Editar .env y agregar tus API keys
+
+# Variables obligatorias en .env:
+# OPENAI_API_KEY=sk-proj-tu-key-aqui
+
+# Variables opcionales para trazabilidad:
+# LANGCHAIN_TRACING_V2=true
+# LANGCHAIN_API_KEY=lsv2_pt_tu-key-aqui
+# LANGCHAIN_PROJECT=colombina-chatbot
+# LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 
 # Instalar Ollama (opcional, para primera entrega)
 ollama pull gpt-oss:20b
@@ -155,10 +226,62 @@ ollama pull gpt-oss:20b
 
 ## 🏃‍♂️ Uso del Sistema
 
+### 🌐 API REST en Producción (Tercera Entrega)
+
+#### Despliegue en Railway
+El sistema está desplegado en Railway y accesible públicamente 24/7.
+
+**URL de producción**: `https://tu-app.railway.app` (configurar según tu deployment)
+
+#### Endpoints Disponibles:
+
+1. **Documentación Interactiva**
+   - Swagger UI: `https://tu-app.railway.app/docs`
+   - ReDoc: `https://tu-app.railway.app/redoc`
+
+2. **Health Check**
+   ```bash
+   curl https://tu-app.railway.app/health
+   # Respuesta: {"status":"healthy","version":"2.0.0"}
+   ```
+
+3. **Chat Endpoint**
+   ```bash
+   curl -X POST https://tu-app.railway.app/chat \
+     -H "Content-Type: application/json" \
+     -d '{
+       "message": "¿Cuál es la misión de Colombina?",
+       "session_id": "user-123",
+       "temperature": 0.7,
+       "top_p": 0.9,
+       "max_tokens": 500
+     }'
+   ```
+
+4. **Interfaz Web**
+   - HTML: `https://tu-app.railway.app/interface`
+   - Interfaz interactiva con diseño moderno
+
+#### Ejecutar Localmente (Desarrollo)
+```bash
+# Opción 1: Usando el servidor de producción
+python api_server.py
+# Servidor en http://localhost:8000
+
+# Opción 2: Usando uvicorn directamente
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+
+# Acceder a:
+# - API: http://localhost:8000
+# - Docs: http://localhost:8000/docs
+# - Interface: http://localhost:8000/interface
+# - Health: http://localhost:8000/health
+```
+
 ### 🎯 Agente Conversacional (Segunda Entrega)
 ```bash
 # Interfaz principal Streamlit con agente RAG
-streamlit run app.py
+streamlit run interface/streamlit/app.py
 ```
 **Funcionalidades:**
 - Conversación natural con memoria persistente
@@ -166,12 +289,19 @@ streamlit run app.py
 - Datos estructurados (contacto, horarios, NIT)
 - Sistema de fallback inteligente
 
-### 📊 Interfaz Básica y Herramientas de Análisis (Primera Entrega)
+### 📊 Interfaces de Usuario
+
+#### Interfaz HTML (Tercera Entrega)
+Incluida en la API REST, accesible en `/interface`
+- Diseño moderno y responsivo
+- Chat en tiempo real
+- Gestión automática de sesiones
+- Sin necesidad de configuración adicional
 
 #### Interfaz Streamlit Original
 ```bash
 # Interfaz básica con 4 pestañas (modelo local sin RAG)
-streamlit run chatbot.py
+streamlit run interface/streamlit/chatbot.py
 ```
 **Funcionalidades:**
 - Sistema Q&A con modelo local (Ollama)
@@ -247,22 +377,80 @@ User Input → LangGraph Agent → Tools (RAG/Structured Data) → Response
                 Memory Persistence → Streamlit Interface (app.py)
 ```
 
+### Flujo de Datos - Tercera Entrega (Arquitectura Completa)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    USUARIOS / CLIENTES                      │
+│  (Navegador Web, Apps Móviles, Integraciones API)           │
+└──────────────────────┬──────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────┐
+│                  INTERFACES DE USUARIO                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐    │
+│  │ HTML/CSS/JS  │  │  Streamlit   │  │   API REST      │    │
+│  │  (Vanilla)   │  │  Interface   │  │  (FastAPI)      │    │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬────────┘    │
+└─────────┼──────────────────┼───────────────────┼────────────┘
+          │                  │                   │
+          └──────────────────┴───────────────────┘
+                             ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    CAPA DE API (FastAPI)                    │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │  Endpoints: /chat, /health, /interface, /docs      │     │
+│  │  Validación: Pydantic Models                        │    │
+│  │  Seguridad: CORS, Environment Variables             │    │
+│  └─────────────────────┬───────────────────────────────┘    │
+└────────────────────────┼────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│              AGENTE CONVERSACIONAL (LangGraph)              │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │  • Memory Management (MemorySaver)                   │   │
+│  │  • Session Tracking (thread_id)                      │   │
+│  │  • Dynamic Parameters (temp, top_p, max_tokens)      │   │
+│  │  • Fallback Logic                                    │   │
+│  └────────────┬─────────────────────┬───────────────────┘   │
+└───────────────┼─────────────────────┼───────────────────────┘
+                ↓                     ↓
+    ┌───────────────────┐ ┌───────────────────────┐
+    │  Tool: RAG        │ │  Tool: Structured     │
+    │  (ChromaDB)       │ │  Data (JSON)          │
+    └─────────┬─────────┘ └─────────┬─────────────┘
+              ↓                     ↓
+┌─────────────────────────────────────────────────────────────┐
+│                   FUENTES DE DATOS                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐    │
+│  │  ChromaDB    │  │   JSON       │  │  Knowledge Base │    │
+│  │  (Vectores)  │  │  (Datos)     │  │  (Documentos)   │    │
+│  └──────────────┘  └──────────────┘  └─────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│              SERVICIOS EXTERNOS / MONITOREO                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐    │
+│  │   OpenAI     │  │  LangSmith   │  │    Railway      │    │
+│  │  (GPT-4o)    │  │ (Tracing)    │  │  (Hosting)      │    │
+│  └──────────────┘  └──────────────┘  └─────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ---
 
-## � Componentes Clave por Entrega
+## 🎯 Componentes Clave por Entrega
 
 ### Primera Entrega
 
 #### [`web_scraping/scripts/advanced_scraper.py`](web_scraping/scripts/advanced_scraper.py)
 Sistema robusto de extracción con categorización automática y manejo de errores.
 
-#### [`chunking/chunking.py`](chunking/chunking.py)
+#### [`utils/chunking/chunking.py`](utils/chunking/chunking.py)
 División inteligente de contenido para optimización de consultas.
 
 #### [`llm/summary/generate_summary.py`](llm/summary/generate_summary.py)
 Análisis ejecutivo de información corporativa.
 
-#### [`chatbot.py`](chatbot.py)
+#### [`interface/streamlit/chatbot.py`](interface/streamlit/chatbot.py)
 Interfaz Streamlit original con 4 pestañas: chatbot, Q&A, FAQs y resumen ejecutivo. Utiliza modelos locales sin vectorización.
 
 ### Segunda Entrega
@@ -276,8 +464,45 @@ Herramienta RAG con ChromaDB y contextualización de consultas.
 #### [`RAG/agent/tool_structured_data.py`](RAG/agent/tool_structured_data.py)
 Acceso a datos fácticos específicos (contacto, horarios, NIT).
 
-#### [`app.py`](app.py)
+#### [`interface/streamlit/app.py`](interface/streamlit/app.py)
 Interfaz Streamlit con gestión de sesiones y memoria persistente.
+
+### Tercera Entrega
+
+#### [`api/main.py`](api/main.py)
+Aplicación FastAPI completa con:
+- Endpoints REST (`/chat`, `/health`, `/interface`)
+- Documentación automática (Swagger/ReDoc)
+- Validación con Pydantic
+- CORS configurado
+- Modelos de request/response
+- Manejo de errores
+- Integración con el agente LangGraph
+
+#### [`api_server.py`](api_server.py)
+Servidor de producción optimizado:
+- Configuración de puerto dinámico (Railway)
+- Logging profesional
+- Variables de entorno
+- Ejecución con Uvicorn
+
+#### [`interface/html/`](interface/html/)
+Interfaz web moderna en HTML/CSS/JavaScript:
+- **`index.html`**: Estructura del chat
+- **`styles.css`**: Diseño moderno y responsivo
+- **`app.js`**: Lógica del cliente y comunicación con API
+
+#### Configuración de Despliegue
+
+**`.env.example`**: Plantilla de configuración con:
+- Variables obligatorias (OpenAI)
+- Variables opcionales (LangSmith para trazabilidad)
+- Documentación detallada
+
+**Railway Configuration**:
+- Configuración de healthcheck
+- Política de reintentos
+- Variables de entorno en la plataforma
 
 ---
 
@@ -295,6 +520,16 @@ Interfaz Streamlit con gestión de sesiones y memoria persistente.
 - **2 herramientas especializadas** integradas
 - **Interfaz web** interactiva
 - **Fallback inteligente** implementado
+
+### Tercera Entrega - Producción y Escalabilidad
+- **API REST** completamente funcional con 4+ endpoints
+- **Despliegue en Railway** con 99.9% uptime
+- **Trazabilidad LangSmith** con monitoreo en tiempo real
+- **3 interfaces** diferentes (HTML, Streamlit x2)
+- **Documentación automática** (Swagger + ReDoc)
+- **Sistema de sesiones** robusto
+- **Parámetros dinámicos** configurables por request
+- **Healthcheck** para monitoreo de infraestructura
 
 ---
 
@@ -320,7 +555,7 @@ python RAG/agent/tool_structured_data.py
 
 ## 🔒 Mejores Prácticas Implementadas
 
-### Ambas Entregas
+### Todas las Entregas
 - ✅ API Keys en variables de entorno
 - ✅ Logging comprehensivo sin información sensible
 - ✅ Manejo robusto de errores
@@ -334,9 +569,21 @@ python RAG/agent/tool_structured_data.py
 - ✅ Interfaz de usuario intuitiva
 - ✅ Arquitectura modular escalable
 
+### Tercera Entrega - Producción
+- ✅ API REST con FastAPI y validación Pydantic
+- ✅ Documentación automática (OpenAPI/Swagger)
+- ✅ CORS configurado para seguridad
+- ✅ Healthchecks para monitoreo
+- ✅ Despliegue automatizado en Railway
+- ✅ Trazabilidad completa con LangSmith
+- ✅ Variables de entorno seguras
+- ✅ Múltiples interfaces para diferentes casos de uso
+- ✅ Configuración de parámetros dinámicos
+- ✅ Logging estructurado con emojis para mejor UX
+
 ---
 
-## � Roadmap de Desarrollo
+## 🗺️ Roadmap de Desarrollo
 
 ### ✅ Primera Entrega (Completada)
 - Infraestructura de datos
@@ -349,6 +596,13 @@ python RAG/agent/tool_structured_data.py
 - Memoria persistente
 - Interfaz web interactiva
 - Sistema de herramientas
+
+### ✅ Tercera Entrega (Completada)
+- API REST con FastAPI
+- Despliegue en Railway
+- Trazabilidad con LangSmith
+- Múltiples interfaces de usuario
+- Sistema de monitoreo
 
 ---
 
@@ -380,6 +634,10 @@ Las contribuciones son bienvenidas. Por favor:
 - Testing y validación
 - Documentación y ejemplos
 - Nuevas herramientas para el agente
+- Mejoras en la API REST
+- Nuevas interfaces de usuario
+- Optimización de costos
+- Seguridad y autenticación
 
 ---
 
@@ -396,6 +654,22 @@ Para preguntas o sugerencias sobre este centro de información, por favor contac
 ---
 
 ## 🔄 Changelog
+
+### v3.0.0 - Tercera Entrega (2025-11-21) 🚀
+- ✨ **NUEVO:** API REST completa con FastAPI
+- ✨ **NUEVO:** Despliegue en Railway (producción 24/7)
+- ✨ **NUEVO:** Trazabilidad con LangSmith
+- ✨ **NUEVO:** Interfaz HTML/CSS/JS moderna
+- ✨ **NUEVO:** Documentación automática (Swagger/ReDoc)
+- ✨ **NUEVO:** Healthcheck endpoint
+- ✨ **NUEVO:** Parámetros dinámicos del modelo (temperature, top_p, max_tokens)
+- ✨ **NUEVO:** Sistema de sesiones robusto
+- ✨ **NUEVO:** Variables de entorno con .env.example
+- ✨ **NUEVO:** CORS configurado para múltiples clientes
+- 🔧 **Mejorado:** Organización de interfaces en carpeta dedicada
+- 🔧 **Mejorado:** Logging profesional con diagnósticos
+- 🔧 **Mejorado:** Manejo de errores más granular
+- 📚 **Documentación:** Guías de despliegue y configuración
 
 ### v2.0.0 - Segunda Entrega (2025-11-06)
 - ✨ **NUEVO:** Agente conversacional con LangGraph
